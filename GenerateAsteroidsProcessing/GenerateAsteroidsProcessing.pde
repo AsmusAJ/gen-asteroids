@@ -2,6 +2,7 @@
 void setup() {
   fullScreen();
   imageMode(CENTER);
+  rectMode(CENTER);
 
   initializeMap();
   
