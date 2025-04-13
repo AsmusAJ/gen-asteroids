@@ -1,0 +1,26 @@
+int arenaDiameter = 1500;
+int arenaCenterX; 
+int arenaCenterY; 
+
+void initializeMap() {
+  arenaCenterX = width / 2; 
+  arenaCenterY = height / 2;
+  drawMap();
+}
+
+void drawMap() {
+  background(color0);
+}
+
+void drawArena() {
+  noStroke();
+  fill(color2);
+  circle(arenaCenterX, arenaCenterY, arenaDiameter);
+}
+
+void drawBorder() {
+  noFill();
+  stroke(color3);
+  strokeWeight(55);
+  circle(arenaCenterX, arenaCenterY, arenaDiameter + 55);
+}
