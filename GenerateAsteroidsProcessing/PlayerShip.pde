@@ -1,7 +1,6 @@
 PImage playerSprite;
 
 PlayerShip playerShip;
-import java.util.Iterator;
 
 class PlayerShip {
   PlayerShip(int spawnXPos, int spawnYPos) {
@@ -86,6 +85,7 @@ class PlayerShip {
       curLazer.renderLazer();
       if (curLazer.hasLazerHitWall() == true) {
         iterator.remove();
+        explosions.add(new Explosion(curLazer.xPosMiddle, curLazer.yPosMiddle, curLazer.lazerColor, 100));
       }
     }
   }

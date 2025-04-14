@@ -1,3 +1,4 @@
+import java.util.Iterator;
 
 void setup() {
   fullScreen();
@@ -9,9 +10,9 @@ void setup() {
   //image loads
   playerSprite = loadImage("PlayerShip.png");
   
-  //delete later
   //establishes class
   playerShip = new PlayerShip(arenaCenterX, arenaCenterY);
+  explosions = new ArrayList<Explosion>();
 }
 
 void draw() {
@@ -20,6 +21,7 @@ void draw() {
   drawArena();
   playerShip.updateShip();
   playerShip.renderShip();
+  renderExplosions();
   drawBorder(); //called after ships
   
 }

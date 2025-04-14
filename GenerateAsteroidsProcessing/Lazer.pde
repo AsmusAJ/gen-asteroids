@@ -29,7 +29,7 @@ class Lazer {
   
   boolean hasLazerHitWall() {
     if (dist(arenaCenterX, arenaCenterY, xPosMiddle + lazerHeight, 
-             yPosMiddle + lazerHeight) > (arenaDiameter / 2)) {
+             yPosMiddle + lazerHeight) > (arenaDiameter / 2.1)) {
       return true;
     }
     return false;
