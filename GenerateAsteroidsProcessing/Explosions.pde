@@ -1,7 +1,7 @@
 ArrayList<Explosion> explosions;
 
 class Explosion {
-  Explosion(float initXPos, float initYPos, color initExplosionColor, int initSize) {
+  Explosion(float initXPos, float initYPos, color initExplosionColor, float initSize) {
     explosionColor = initExplosionColor;
     xPos = initXPos;
     yPos = initYPos;
@@ -12,28 +12,27 @@ class Explosion {
   //returns true if done rendering
   boolean renderExplosion(int curTime) {
     int timeIn = (curTime - explosionStartTime);
-    if (timeIn < 100) {
-      fill(explosionColor);
-      circle(xPos, yPos, 20);
-      return false;
+    int boost = timeIn;
+    float size1 = size/6 + boost / 2;
+    float size2 = size/5 + boost / 3;
+    float size3 = size/2 + boost / 3;
+    if (size1 > size / 2) {
+      size1 = size / 2;
     }
-    if ((timeIn >= 100) && (timeIn < 250)) {
-      fill(explosionColor, 100);
-      circle(xPos, yPos, size/6);
-      fill(explosionColor, 50);
-      circle(xPos, yPos, size/2);
-      return false;
+    if (size2 > size / 1.3) {
+      size2 = size / 1.3;
     }
-    if ((timeIn >= 250) && (timeIn < 500)) {
-      fill(explosionColor, 100);
-      circle(xPos, yPos, size/6);
-      fill(explosionColor, 50);
-      circle(xPos, yPos, size/2);
-      fill(explosionColor, 30);
-      circle(xPos, yPos, size);
-      return false;
+    if (size3 > size) {
+      size3 = size;
     }
-    return true;
+    fill(explosionColor, 100);
+    circle(xPos, yPos, size1);
+    fill(explosionColor, 50);
+    circle(xPos, yPos, size2);
+    fill(explosionColor, 30);
+    circle(xPos, yPos, size3);
+    if (timeIn > 500) { return true; }
+    return false;
   }
   
   
@@ -41,7 +40,7 @@ class Explosion {
   float xPos;
   float yPos;
   int explosionStartTime;
-  int size;
+  float size;
 }
 
 void renderExplosions() {

@@ -85,7 +85,7 @@ class PlayerShip {
       curLazer.renderLazer();
       if (curLazer.hasLazerHitWall() == true) {
         iterator.remove();
-        explosions.add(new Explosion(curLazer.xPosMiddle, curLazer.yPosMiddle, curLazer.lazerColor, 100));
+        explosions.add(new Explosion(curLazer.xPosMiddle, curLazer.yPosMiddle, curLazer.lazerColor, 50));
       }
     }
   }
