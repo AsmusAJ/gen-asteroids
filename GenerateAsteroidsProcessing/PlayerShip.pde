@@ -1,6 +1,7 @@
 PImage playerSprite;
 
 PlayerShip playerShip;
+import java.util.Iterator;
 
 class PlayerShip {
   PlayerShip(int spawnXPos, int spawnYPos) {
@@ -14,6 +15,7 @@ class PlayerShip {
     leftTurn = false;
     rightTurn = false;
     thrust = false;
+    lazers = new ArrayList<Lazer>();
   }
   
   void renderShip() {
@@ -34,6 +36,7 @@ class PlayerShip {
     turnShip();
     updatePosition();
     fixOutOfBounds();
+    updateLazer();
   }
   
   //turns ship by turnSpeed if key is pressed, if not turns ship by 0.
@@ -75,6 +78,19 @@ class PlayerShip {
     }
   }
   
+  void updateLazer() {
+    Iterator<Lazer> iterator = lazers.iterator();
+    while (iterator.hasNext()) {
+      Lazer curLazer = iterator.next();
+      curLazer.updateLazer();
+      curLazer.renderLazer();
+      if (curLazer.hasLazerHitWall() == true) {
+        iterator.remove();
+      }
+    }
+  }
+  
+  ArrayList<Lazer> lazers;
   float maxSpeed;
   float acceleration;
   float shipXPos;
@@ -101,6 +117,10 @@ void keyPressed() {
   //forward
   if (key == 'w') {
     playerShip.thrust = true;
+  }
+  if (key == 't') {
+    playerShip.lazers.add(new Lazer(30, playerShip.shipXPos, playerShip.shipYPos, 
+                          playerShip.rotation, color(color7)));
   }
 }
   
