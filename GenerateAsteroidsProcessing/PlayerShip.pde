@@ -20,6 +20,12 @@ class PlayerShip {
     pushMatrix(); //saves previous matrix
     translate(shipXPos, shipYPos); //moves origin to center of ship
     rotate(rotation);
+    if (thrust == true) {
+      fill(color7, 50);
+      circle(0, 20, 50); 
+      circle(0, 20, 30);
+      circle(0, 20, 20);
+    }
     image(playerSprite, 0, 0); //draws square at origin as origin is now ships location
     popMatrix(); //restores matrix
   }
