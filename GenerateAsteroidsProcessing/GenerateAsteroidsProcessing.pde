@@ -27,7 +27,7 @@ void draw() {
   drawArena();
   playerShip.updateShip();
   playerShip.renderShip();
-  renderEnemies();
+  updateRenderEnemies();
   renderExplosions();
   drawBorder(); //called after ships
   

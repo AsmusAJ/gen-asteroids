@@ -4,27 +4,51 @@ class EnemyShip {
   EnemyShip(float spawnXPos, float spawnYPos) {
     xPos = spawnXPos;
     yPos = spawnYPos;
-    rotation = 0;  //make this random between certain points
+    rotation = random(0, 2*PI);  //random spawning direction
+    vel = 1.5;
+    noiseCoordinate = random(0.0, 100.0);
   }
   
   //lazers should be added to enemy group array of lazers instead individual arrays for each enemy
+  
+  void updateShip() {
+    updateCoordinates();
+    fixOutOfBounds();
+  }
+  
+  void updateCoordinates() {
+    turnShip();
+    xPos += cos(rotation - (PI / 2)) * vel;
+    yPos += sin(rotation - (PI / 2)) * vel;
+  }
   
   void renderShip() {
     pushMatrix(); //saves previous matrix
     translate(xPos, yPos); //moves origin to center of ship
     rotate(rotation);
-    /* //maybe add back in
-    if (thrust == true) {
-      fill(color7, 50);
-      circle(0, 20, 50); 
-      circle(0, 20, 30);
-      circle(0, 20, 20);
-    }
-    */
     image(enemySprite, 0, 0); //draws square at origin as origin is now ships location
     popMatrix(); //restores matrix
   }
   
+  void turnShip() {
+    float scale = PI/80;
+    float rotationChange = (noise(noiseCoordinate) -.5) * scale; //rotation change
+    rotation += rotationChange;
+    noiseCoordinate += 0.005;
+  }
+  
+  //checks if out of bounds and fixes if so
+  void fixOutOfBounds() {
+    if (dist(arenaCenterX, arenaCenterY, xPos, yPos) > (arenaDiameter / 2)) {
+      float xFromCenter = xPos - arenaCenterX;
+      float yFromCenter = yPos - arenaCenterY;
+      xPos -= xFromCenter * 2;
+      yPos -= yFromCenter * 2;
+    }
+  }
+  
+  float noiseCoordinate;
+  float vel;
   float rotation;
   float xPos;
   float yPos;
