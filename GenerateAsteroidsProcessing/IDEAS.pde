@@ -4,6 +4,7 @@
 
 -use tint when ship takes damage
 
+-make the lazers almost white in the center
 
 
 

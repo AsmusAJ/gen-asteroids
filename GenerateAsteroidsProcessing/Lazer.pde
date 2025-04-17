@@ -2,6 +2,7 @@ class Lazer {
   Lazer(int initHeight, float initXPos, float initYPos, float initAngle, color initColor) {
     angle = initAngle;
     lazerColor = initColor;
+    whiteCore = lerpColor(lazerColor, color(255, 255, 255), 1);
     lazerHeight = initHeight;
     xPosMiddle = initXPos;
     yPosMiddle = initYPos;
@@ -18,17 +19,25 @@ class Lazer {
     pushMatrix(); //saves previous matrix
     translate(xPosMiddle, yPosMiddle); //moves origin to center of ship
     rotate(angle);
+    drawLazer();
+    popMatrix(); //restores matrix
+  }
+  
+  void drawLazer() {
     fill(lazerColor);
     ellipse(0, 0, lazerWidth, lazerHeight);
+    fill(whiteCore);
+    ellipse(0, 0, lazerWidth/2, lazerHeight/2);
     fill(lazerColor, 50);
     ellipse(0, 0, lazerWidth * 1.3, lazerHeight * 1.3);
     fill(lazerColor, 20);
     ellipse(0, 0, lazerWidth * 2, lazerHeight * 1.5);
+    fill(lazerColor, 10);
+    ellipse(0, 0, lazerWidth * 7, lazerHeight * 4);
     fill(lazerColor, 5);
-    ellipse(0, 0, lazerWidth * 7, lazerHeight * 3);
-    fill(lazerColor, 2);
     ellipse(0, 0, lazerWidth * 10, lazerHeight * 6);
-    popMatrix(); //restores matrix
+    fill(lazerColor, 2);
+    ellipse(0, 0, lazerWidth * 15, lazerHeight * 10);
   }
   
   boolean hasLazerHitWall() {
@@ -44,6 +53,7 @@ class Lazer {
   float xPosMiddle;
   float yPosMiddle;
   color lazerColor;
+  color whiteCore;
   float angle;
   int lazerHeight;
   int lazerWidth = 3;
