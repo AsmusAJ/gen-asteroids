@@ -14,7 +14,7 @@ void setup() {
   enemySprite  = loadImage("EnemyShip.png");
   
   //establishes class
-  metronome = new Metronome(132);
+  metronome = new Metronome(122);
   playerShip = new PlayerShip(arenaCenterX, arenaCenterY);
   explosions = new ArrayList<Explosion>();
   enemies = new ArrayList<EnemyShip>();

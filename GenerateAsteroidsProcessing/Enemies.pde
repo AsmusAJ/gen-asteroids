@@ -6,6 +6,18 @@ void enemyFactory() {
   enemies.add(new EnemyShip(arenaCenterX - 200, arenaCenterY + 200, 3));
   enemies.add(new EnemyShip(arenaCenterX + 200, arenaCenterY + 200, 3));
   enemies.add(new EnemyShip(arenaCenterX - 200, arenaCenterY - 200, 3));
+  enemies.add(new EnemyShip(arenaCenterX + 200, arenaCenterY - 200, 3));
+  enemies.add(new EnemyShip(arenaCenterX - 200, arenaCenterY + 200, 3));
+  enemies.add(new EnemyShip(arenaCenterX + 200, arenaCenterY + 200, 3));
+  enemies.add(new EnemyShip(arenaCenterX - 200, arenaCenterY - 200, 3));
+  enemies.add(new EnemyShip(arenaCenterX + 200, arenaCenterY - 200, 3));
+  enemies.add(new EnemyShip(arenaCenterX - 200, arenaCenterY + 200, 3));
+  enemies.add(new EnemyShip(arenaCenterX + 200, arenaCenterY + 200, 3));
+  enemies.add(new EnemyShip(arenaCenterX - 200, arenaCenterY - 200, 3));
+  enemies.add(new EnemyShip(arenaCenterX + 200, arenaCenterY - 200, 3));
+  enemies.add(new EnemyShip(arenaCenterX - 200, arenaCenterY + 200, 3));
+  enemies.add(new EnemyShip(arenaCenterX + 200, arenaCenterY + 200, 3));
+  enemies.add(new EnemyShip(arenaCenterX - 200, arenaCenterY - 200, 3));
 }
 
 void updateRenderEnemies() {

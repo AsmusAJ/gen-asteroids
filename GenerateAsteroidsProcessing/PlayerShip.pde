@@ -37,6 +37,9 @@ class PlayerShip {
       circle(0, 20, 30);
       circle(0, 20, 20);
     }
+    fill(color7, 50);
+    textSize(128);
+    text(frameRate, 40, 40);
     image(playerSprite, 0, 0); //draws square at origin as origin is now ships location
     popMatrix(); //restores matrix
   }
@@ -108,7 +111,7 @@ class PlayerShip {
     StepActions current = steps[curStep];
     if (current.fireBullet == true && current.completed == false) {
       playerShip.lazers.add(new Lazer(30, playerShip.shipXPos, playerShip.shipYPos, 
-                          playerShip.rotation - (PI / 2), color(color7)));
+                          playerShip.rotation - (PI / 2), color(color4)));
       current.completed = true;
     }
     steps[(curStep + 1) % 16].completed = false; //resets the next step to not being completed yet

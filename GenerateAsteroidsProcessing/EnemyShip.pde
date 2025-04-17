@@ -13,7 +13,7 @@ class EnemyShip {
     steps = new StepActions[16];
     // Initialize the array, setting specific elements as needed
     for (int i = 0; i < steps.length; i++) {
-      if (i == 0) {
+      if (i < 16) {
         steps[i] = new StepActions(true);  // First element is set to true
       } else {
         steps[i] = new StepActions(false); // Other elements are set to false
@@ -27,7 +27,7 @@ class EnemyShip {
   boolean updateShip() {
     updateCoordinates();
     boolean alive = hitHandler();
-    if (health >= 0) { 
+    if (alive) { 
       fixOutOfBounds(); 
       metroActionsHandler();
     }
@@ -37,23 +37,23 @@ class EnemyShip {
   void fireLazer() {
     float lazerRotation = atan2(playerShip.shipYPos - yPos, playerShip.shipXPos - xPos);
     enemyLazers.add(new Lazer(30, xPos, yPos, 
-                          lazerRotation, color(color4)));
+                          lazerRotation, color(color7)));
   }
   
-  //if returns false player is dead
+  //it returns false if enemy is dead
   boolean hitHandler() {
     if (hit == true) {
       hit = false;
       int curTime = millis();
       if ((curTime - millisAtHit) > 500) { //.5 sec invince frames
         millisAtHit = curTime;
-        if (health >= 0) {
+        if (health > 1) {
           health--;
-          explosions.add(new Explosion(xPos, yPos, color(color7), 75));
+          explosions.add(new Explosion(xPos, yPos, color(color4), 75));
           return true;
         }
         else {
-          explosions.add(new Explosion(xPos, yPos, color(color7), 200));
+          explosions.add(new Explosion(xPos, yPos, color(color4), 200));
           return false;
         }
       }
