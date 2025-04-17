@@ -15,6 +15,15 @@ class PlayerShip {
     rightTurn = false;
     thrust = false;
     lazers = new ArrayList<Lazer>();
+    steps = new StepActions[16];
+    // Initialize the array, setting specific elements as needed
+    for (int i = 0; i < steps.length; i++) {
+      if (i % 2 == 0) {
+        steps[i] = new StepActions(true);  // First element is set to true
+      } else {
+        steps[i] = new StepActions(false); // Other elements are set to false
+      }
+    }
   }
   
   void renderShip() {
@@ -32,6 +41,7 @@ class PlayerShip {
   }
   
   void updateShip() {
+    metroActionsHandler();
     turnShip();
     updatePosition();
     fixOutOfBounds();
@@ -87,9 +97,23 @@ class PlayerShip {
         iterator.remove();
         explosions.add(new Explosion(curLazer.xPosMiddle, curLazer.yPosMiddle, curLazer.lazerColor, 50));
       }
+      else {
+        curLazer.lazerHandler();
+      }
     }
   }
   
+  void metroActionsHandler() {
+    StepActions current = steps[curStep];
+    if (current.fireBullet == true && current.completed == false) { //<>//
+      playerShip.lazers.add(new Lazer(30, playerShip.shipXPos, playerShip.shipYPos, 
+                          playerShip.rotation, color(color7)));
+      current.completed = true;
+    }
+    steps[(curStep + 1) % 16].completed = false; //resets the next step to not being completed yet
+  }
+  
+  StepActions steps[];
   ArrayList<Lazer> lazers;
   float maxSpeed;
   float acceleration;
@@ -118,10 +142,6 @@ void keyPressed() {
   if (key == 'w') {
     playerShip.thrust = true;
   }
-  if (key == 't') {
-    playerShip.lazers.add(new Lazer(30, playerShip.shipXPos, playerShip.shipYPos, 
-                          playerShip.rotation, color(color7)));
-  }
 }
   
 void keyReleased() {
@@ -136,4 +156,12 @@ void keyReleased() {
   if (key == 'w') {
     playerShip.thrust = false;
   }
+}
+
+class StepActions {
+  StepActions(boolean initBullet) {
+    fireBullet = initBullet;
+  }
+  boolean fireBullet = false;
+  boolean completed = false;
 }

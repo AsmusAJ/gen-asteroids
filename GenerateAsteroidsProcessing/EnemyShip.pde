@@ -7,11 +7,21 @@ class EnemyShip {
     rotation = random(0, 2*PI);  //random spawning direction
     vel = 1.5;
     noiseCoordinate = random(0.0, 100.0);
+    hit = false;
+    millisAtHit = 0; //enables invince at start
   }
   
   //lazers should be added to enemy group array of lazers instead individual arrays for each enemy
   
   void updateShip() {
+    if (hit == true) {
+      hit = false;
+      int curTime = millis();
+      if ((curTime - millisAtHit) > 500) { //.5 sec invince frames
+        explosions.add(new Explosion(xPos, yPos, color(color7), 100));
+        millisAtHit = curTime;
+      }
+    }
     updateCoordinates();
     fixOutOfBounds();
   }
@@ -52,4 +62,6 @@ class EnemyShip {
   float rotation;
   float xPos;
   float yPos;
+  int millisAtHit;
+  boolean hit;
 }
