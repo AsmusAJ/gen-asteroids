@@ -4,15 +4,21 @@ void setup() {
   fullScreen();
   imageMode(CENTER);
   rectMode(CENTER);
+  blendMode(REPLACE);
 
   initializeMap();
   
   //image loads
   playerSprite = loadImage("PlayerShip.png");
+  enemySprite  = loadImage("EnemyShip.png");
   
   //establishes class
   playerShip = new PlayerShip(arenaCenterX, arenaCenterY);
   explosions = new ArrayList<Explosion>();
+  enemies = new ArrayList<EnemyShip>();
+  
+  //add to round gen later
+  enemyFactory();
 }
 
 void draw() {
@@ -21,6 +27,7 @@ void draw() {
   drawArena();
   playerShip.updateShip();
   playerShip.renderShip();
+  renderEnemies();
   renderExplosions();
   drawBorder(); //called after ships
   

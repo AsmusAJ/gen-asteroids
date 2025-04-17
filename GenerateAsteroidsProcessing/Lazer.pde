@@ -24,6 +24,10 @@ class Lazer {
     ellipse(0, 0, lazerWidth * 1.3, lazerHeight * 1.3);
     fill(lazerColor, 20);
     ellipse(0, 0, lazerWidth * 2, lazerHeight * 1.5);
+    fill(lazerColor, 5);
+    ellipse(0, 0, lazerWidth * 7, lazerHeight * 3);
+    fill(lazerColor, 2);
+    ellipse(0, 0, lazerWidth * 10, lazerHeight * 6);
     popMatrix(); //restores matrix
   }
   
