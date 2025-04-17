@@ -6,8 +6,8 @@ class Lazer {
     lazerHeight = initHeight;
     xPosMiddle = initXPos;
     yPosMiddle = initYPos;
-    xUpdate = cos(angle - (PI / 2));
-    yUpdate = sin(angle - (PI / 2));
+    xUpdate = cos(angle);
+    yUpdate = sin(angle);
     lazerImage = createLazerImage();
   }
   
@@ -19,7 +19,7 @@ class Lazer {
   void renderLazer() {
     pushMatrix(); //saves previous matrix
     translate(xPosMiddle, yPosMiddle); //moves origin to center of ship
-    rotate(angle);
+    rotate(angle - (PI/2));
     image(lazerImage, 0, 0);
     popMatrix(); //restores matrix
   }
@@ -83,6 +83,12 @@ class Lazer {
         curShip.hit = true;
       }
     }
+  }
+  
+  void enemyLazerHandler() {
+    if(dist(playerShip.shipXPos, playerShip.shipYPos, xPosMiddle, yPosMiddle) < 50) {
+        playerShip.hit = true;
+      }
   }
   
   PImage lazerImage;

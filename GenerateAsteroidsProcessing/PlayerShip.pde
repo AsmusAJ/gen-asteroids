@@ -14,6 +14,7 @@ class PlayerShip {
     leftTurn = false;
     rightTurn = false;
     thrust = false;
+    hit = false;
     lazers = new ArrayList<Lazer>();
     steps = new StepActions[16];
     // Initialize the array, setting specific elements as needed
@@ -105,9 +106,9 @@ class PlayerShip {
   
   void metroActionsHandler() {
     StepActions current = steps[curStep];
-    if (current.fireBullet == true && current.completed == false) { //<>//
+    if (current.fireBullet == true && current.completed == false) {
       playerShip.lazers.add(new Lazer(30, playerShip.shipXPos, playerShip.shipYPos, 
-                          playerShip.rotation, color(color7)));
+                          playerShip.rotation - (PI / 2), color(color7)));
       current.completed = true;
     }
     steps[(curStep + 1) % 16].completed = false; //resets the next step to not being completed yet
@@ -125,10 +126,8 @@ class PlayerShip {
   boolean leftTurn;
   boolean rightTurn;
   boolean thrust;
+  boolean hit;
 }
-
-
-
 
 void keyPressed() {
   //left and right turn
