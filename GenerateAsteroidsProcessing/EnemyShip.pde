@@ -82,6 +82,10 @@ class EnemyShip {
     circle(xPos -20, yPos, 30); 
     circle(xPos -20, yPos, 25);
     circle(xPos -20, yPos, 15);
+    fill(#a53030, 20);
+    circle(xPos, yPos, 50);
+    circle(xPos, yPos, 70); 
+    circle(xPos, yPos, 100); 
     
     fill(#577277);//light grey
     triangle(xPos + 40, yPos, xPos - 20, yPos - 15, xPos - 20, yPos + 15);

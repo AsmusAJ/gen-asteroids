@@ -20,7 +20,7 @@ void drawArena() {
 
 void drawBorder() {
   noFill();
-  stroke(color3);
+  stroke(color0);
   strokeWeight(55);
   circle(arenaCenterX, arenaCenterY, arenaDiameter + 55);
 }

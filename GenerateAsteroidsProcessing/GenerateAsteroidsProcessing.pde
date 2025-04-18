@@ -10,7 +10,7 @@ void setup() {
   initializeMap();
   
   //establishes class
-  metronome = new Metronome(220);
+  metronome = new Metronome(114);
   playerShip = new PlayerShip(arenaCenterX, arenaCenterY);
   explosions = new ArrayList<Explosion>();
   enemies = new ArrayList<EnemyShip>();

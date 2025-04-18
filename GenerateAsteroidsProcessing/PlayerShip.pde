@@ -32,14 +32,11 @@ class PlayerShip {
     translate(shipXPos, shipYPos); //moves origin to center of ship
     rotate(rotation);
     if (thrust == true) {
-      fill(#3c5e8b, 50);
+      fill(#3c5e8b, 100);
       circle(-20, 0, 40); 
       circle(-20, 0, 25);
       circle(-20, 0, 15);
     }
-    fill(color7, 50);
-    textSize(128);
-    text(frameRate, 40, 40);
     drawShip(0, 0);
     popMatrix(); //restores matrix
   }
@@ -60,6 +57,9 @@ class PlayerShip {
     
     fill(#3c5e8b);//blue
     ellipse(xPos - 5, yPos, 15, 8);
+    
+    fill(#3c5e8b, 20); //lighter glow
+    circle(xPos, yPos, 100); 
   }
   
   void updateShip() {
