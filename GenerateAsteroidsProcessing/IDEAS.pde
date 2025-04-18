@@ -7,8 +7,8 @@
 -make the lazers almost white in the center
 
 
-
-
+efficiency Ideas
+-Could make it so that when out of view of player enemies are not rendered
 
 
 
