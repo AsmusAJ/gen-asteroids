@@ -13,7 +13,7 @@ class EnemyShip {
     steps = new StepActions[16];
     // Initialize the array, setting specific elements as needed
     for (int i = 0; i < steps.length; i++) {
-      if (i < 16) {
+      if (i % 2 == 0) {
         steps[i] = new StepActions(true);  // First element is set to true
       } else {
         steps[i] = new StepActions(false); // Other elements are set to false
@@ -63,16 +63,36 @@ class EnemyShip {
   
   void updateCoordinates() {
     turnShip();
-    xPos += cos(rotation - (PI / 2)) * vel;
-    yPos += sin(rotation - (PI / 2)) * vel;
+    xPos += cos(rotation) * vel;
+    yPos += sin(rotation) * vel;
   }
   
   void renderShip() {
     pushMatrix(); //saves previous matrix
     translate(xPos, yPos); //moves origin to center of ship
     rotate(rotation);
-    image(enemySprite, 0, 0); //draws square at origin as origin is now ships location
+    drawEnemyShip(0, 0);
     popMatrix(); //restores matrix
+  }
+  
+  void drawEnemyShip(float xPos, float yPos) {
+    noStroke();
+    //rocket
+    fill(#a53030, 50);
+    circle(xPos -20, yPos, 30); 
+    circle(xPos -20, yPos, 25);
+    circle(xPos -20, yPos, 15);
+    
+    fill(#577277);//light grey
+    triangle(xPos + 40, yPos, xPos - 20, yPos - 15, xPos - 20, yPos + 15);
+    
+    fill(#090a14);//black
+    triangle(xPos - 30, yPos - 32, xPos - 20, yPos - 5, xPos, yPos - 5);
+    triangle(xPos - 30, yPos + 32, xPos - 20, yPos + 5, xPos, yPos + 5);
+    triangle(xPos + 40, yPos, xPos - 20, yPos - 10, xPos - 20, yPos + 10);
+    
+    fill(#a53030); //red
+    ellipse(xPos - 5, yPos, 12, 7);
   }
   
   void turnShip() {

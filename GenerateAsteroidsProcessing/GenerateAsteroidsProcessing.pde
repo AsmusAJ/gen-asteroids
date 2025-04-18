@@ -9,12 +9,8 @@ void setup() {
 
   initializeMap();
   
-  //image loads
-  playerSprite = loadImage("PlayerShip.png");
-  enemySprite  = loadImage("EnemyShip.png");
-  
   //establishes class
-  metronome = new Metronome(96);
+  metronome = new Metronome(220);
   playerShip = new PlayerShip(arenaCenterX, arenaCenterY);
   explosions = new ArrayList<Explosion>();
   enemies = new ArrayList<EnemyShip>();

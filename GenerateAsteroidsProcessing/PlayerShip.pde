@@ -32,16 +32,34 @@ class PlayerShip {
     translate(shipXPos, shipYPos); //moves origin to center of ship
     rotate(rotation);
     if (thrust == true) {
-      fill(color7, 50);
-      circle(0, 20, 50); 
-      circle(0, 20, 30);
-      circle(0, 20, 20);
+      fill(#3c5e8b, 50);
+      circle(-20, 0, 40); 
+      circle(-20, 0, 25);
+      circle(-20, 0, 15);
     }
     fill(color7, 50);
     textSize(128);
     text(frameRate, 40, 40);
-    image(playerSprite, 0, 0); //draws square at origin as origin is now ships location
+    drawShip(0, 0);
     popMatrix(); //restores matrix
+  }
+  
+  //draws playership centered around xPos and yPos
+  void drawShip(float xPos, float yPos) {
+    noStroke();
+    fill(#819796);//dark grey
+    triangle(xPos + 40, yPos, xPos - 20, yPos - 15, xPos - 20, yPos + 15);
+    circle(xPos - 20, yPos, 10);
+    
+    fill(#a8b5b2);//light grey
+    triangle(xPos + 30, yPos, xPos - 20, yPos - 10, xPos - 20, yPos + 10); //long one
+    triangle(xPos + 15, yPos, xPos - 15, yPos - 20, xPos - 15, yPos + 20); //middle one
+    triangle(xPos + 5, yPos, xPos - 20, yPos - 30, xPos - 20, yPos + 30);      //end one
+    triangle(xPos - 20, yPos - 30, xPos - 30, yPos - 32, xPos - 20, yPos - 10); //top wing tip
+    triangle(xPos - 20, yPos + 30, xPos - 30, yPos + 32, xPos - 20, yPos + 10); //bottom wing tip
+    
+    fill(#3c5e8b);//blue
+    ellipse(xPos - 5, yPos, 15, 8);
   }
   
   void updateShip() {
@@ -64,8 +82,8 @@ class PlayerShip {
   
   void updatePosition() {
      if (thrust) {
-        velX += cos(rotation - (PI / 2)) * acceleration; //applies thrust to thrust values
-        velY += sin(rotation - (PI / 2)) * acceleration;
+        velX += cos(rotation) * acceleration; //applies thrust to thrust values
+        velY += sin(rotation) * acceleration;
         
         float curSpeed = sqrt(velX * velX + velY * velY);
         if (curSpeed > maxSpeed) { //limit speed
@@ -111,7 +129,7 @@ class PlayerShip {
     StepActions current = steps[curStep];
     if (current.fireBullet == true && current.completed == false) {
       playerShip.lazers.add(new Lazer(30, playerShip.shipXPos, playerShip.shipYPos, 
-                          playerShip.rotation - (PI / 2), color(color4)));
+                          playerShip.rotation, color(color4)));
       current.completed = true;
     }
     steps[(curStep + 1) % 16].completed = false; //resets the next step to not being completed yet
