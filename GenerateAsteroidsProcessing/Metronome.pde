@@ -13,6 +13,8 @@ class Metronome {
     int curTime = millis();
     if (curTime - timeOfLastStep >= intervalBetweenEights) {
       curStep = (curStep + 1) % 16;
+      String message = "/step/" + str(curStep);
+      oscSender.send(new OscMessage(message), remoteAddress);
       timeOfLastStep = curTime;
     }
   } 

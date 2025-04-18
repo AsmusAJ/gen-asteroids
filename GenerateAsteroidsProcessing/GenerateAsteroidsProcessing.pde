@@ -6,7 +6,11 @@ void setup() {
   imageMode(CENTER);
   rectMode(CENTER);
   blendMode(REPLACE);
-
+  
+  //establishes connection through osc to osund
+  oscSender = new OscP5(this, 7007); //connects to processing port
+  remoteAddress = new NetAddress("127.0.0.1", 7014);
+  
   initializeMap();
   
   //establishes class
