@@ -20,7 +20,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 130.172420620918274, 187.48647403717041, 106.896557331085205, 22.0 ],
-					"text" : "enemy/1/lazer"
+					"text" : "enemy/14/lazer"
 				}
 
 			}
