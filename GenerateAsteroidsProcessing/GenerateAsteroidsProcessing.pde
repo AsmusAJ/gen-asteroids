@@ -1,6 +1,8 @@
 import java.util.Iterator;
 
 int level = 0;
+boolean levelStart = true;
+int millisOfLevelStart = 0;
 
 void setup() {
   fullScreen();
@@ -24,9 +26,6 @@ void setup() {
   explosions = new ArrayList<Explosion>();
   enemies = new ArrayList<EnemyShip>();
   enemyLazers = new ArrayList<Lazer>();
-  
-  //add to round gen later
-  enemyFactory();
 }
 
 void draw() {
@@ -37,15 +36,43 @@ void draw() {
     drawControlScreen();
   }
   else {
-    metronome.updateMetronome();
-    drawMap();
-    translate(arenaCenterX - playerShip.shipXPos, arenaCenterY - playerShip.shipYPos);
-    drawArena();
-    updateRenderEnemies();
-    updateEnemyLazers();
-    playerShip.updateShip();
-    playerShip.renderShip();
-    renderExplosions();
-    drawBorder(); //called after ships
+    if (levelStart == true) {
+      enemyFactory();
+      if (millis() - millisOfLevelStart < 5000) {
+        printLevel();
+      }
+      else {
+        levelStart = false;
+      }
+    }
+    else {
+      metronome.updateMetronome();
+      drawMap();
+      translate(arenaCenterX - playerShip.shipXPos, arenaCenterY - playerShip.shipYPos);
+      drawArena();
+      updateRenderEnemies();
+      updateEnemyLazers();
+      playerShip.updateShip();
+      playerShip.renderShip();
+      renderExplosions();
+      drawBorder(); //called after ships
+    }
   }
+}
+
+void printLevel() {
+  pushStyle(); //saves previous style
+  
+  rectMode(CENTER);
+  textAlign(CENTER);
+  
+  fill(color5);
+  textFont(menuFont, 200);
+  
+  String message = ("Level: " + level);
+  text(message, arenaCenterX, arenaCenterY); 
+  
+
+  
+  popStyle(); //returns previous style
 }

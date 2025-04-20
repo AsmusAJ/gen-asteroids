@@ -4,7 +4,7 @@ ArrayList<Lazer> enemyLazers;
 
 void enemyFactory() {
   int difficultyPoints = 100 * level;
-  if (difficultyPoints >= 100) {
+  while (difficultyPoints >= 100) {
     spawnTier1Enemy();
     difficultyPoints -= 100;
   }
@@ -19,11 +19,11 @@ void spawnTier1Enemy() {
 float[] generateRandomCoordinates() {
   float angle = random(TWO_PI); //generates random angle 
   
-  float r = arenaRadius * random(1); //generate a random point along the angle
+  float r = arenaRadius * sqrt(random(1)); //generate a random point along the angle
   
   //convert to x, y
-  float x = r * cos(angle);
-  float y = r * sin(angle);
+  float x = r * cos(angle) + arenaCenterX;
+  float y = r * sin(angle) + arenaCenterY;
   
   return new float[] {x, y}; //returns array made from x y
 }
@@ -39,6 +39,12 @@ void updateRenderEnemies() {
     else {
       iterator.remove();
     }
+  }
+  //no more enemies round is over
+  if(enemies.isEmpty() == true) {
+    level++;
+    levelStart = true;
+    millisOfLevelStart = millis();
   }
 }
 

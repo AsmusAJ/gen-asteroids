@@ -54,6 +54,7 @@ void drawStartUpScreen() {
   if (key == ENTER || key == RETURN) {
     if (newGame == true) { //starts game
       level++;
+      millisOfLevelStart = millis();
     }
     else { //goes to controls
       level--;

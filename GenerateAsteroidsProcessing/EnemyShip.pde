@@ -22,7 +22,7 @@ class EnemyShip {
     }
   }
     
-  //returns false if player is dead
+  //returns false if enemy is dead
   boolean updateShip() {
     updateCoordinates();
     boolean alive = hitHandler();
