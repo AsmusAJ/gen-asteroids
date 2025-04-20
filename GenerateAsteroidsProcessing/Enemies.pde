@@ -3,8 +3,29 @@ int numEnemies = 0;
 ArrayList<Lazer> enemyLazers;
 
 void enemyFactory() {
-  enemies.add(new EnemyShip(arenaCenterX + 200, arenaCenterY - 200, 3));
-  enemies.add(new EnemyShip(arenaCenterX + 200, arenaCenterY - 200, 3));
+  int difficultyPoints = 100 * level;
+  if (difficultyPoints >= 100) {
+    spawnTier1Enemy();
+    difficultyPoints -= 100;
+  }
+}
+
+void spawnTier1Enemy() {
+  float[] coordinates = generateRandomCoordinates();
+  
+  enemies.add(new EnemyShip(coordinates[0], coordinates[1], 3));
+}
+
+float[] generateRandomCoordinates() {
+  float angle = random(TWO_PI); //generates random angle 
+  
+  float r = arenaRadius * random(1); //generate a random point along the angle
+  
+  //convert to x, y
+  float x = r * cos(angle);
+  float y = r * sin(angle);
+  
+  return new float[] {x, y}; //returns array made from x y
 }
 
 void updateRenderEnemies() {

@@ -1,10 +1,12 @@
 int arenaDiameter = 1500;
+int arenaRadius;
 int arenaCenterX; 
 int arenaCenterY; 
 
 void initializeMap() {
   arenaCenterX = width / 2; 
   arenaCenterY = height / 2;
+  arenaRadius = arenaDiameter / 2;
   drawMap();
 }
 

@@ -1,10 +1,16 @@
 import java.util.Iterator;
 
+int level = 0;
+
 void setup() {
   fullScreen();
   imageMode(CENTER);
   rectMode(CENTER);
   blendMode(REPLACE);
+  
+  //menu text load
+  menuFont = createFont("spaceAge.ttf", 100);
+  
   
   //establishes connection through osc to osund
   oscSender = new OscP5(this, 7007); //connects to processing port
@@ -24,14 +30,22 @@ void setup() {
 }
 
 void draw() {
-  metronome.updateMetronome();
-  drawMap();
-  translate(arenaCenterX - playerShip.shipXPos, arenaCenterY - playerShip.shipYPos);
-  drawArena();
-  updateRenderEnemies();
-  updateEnemyLazers();
-  playerShip.updateShip();
-  playerShip.renderShip();
-  renderExplosions();
-  drawBorder(); //called after ships
+  if (level == 0) {
+    drawStartUpScreen();
+  }
+  else if (level == -1) {
+    drawControlScreen();
+  }
+  else {
+    metronome.updateMetronome();
+    drawMap();
+    translate(arenaCenterX - playerShip.shipXPos, arenaCenterY - playerShip.shipYPos);
+    drawArena();
+    updateRenderEnemies();
+    updateEnemyLazers();
+    playerShip.updateShip();
+    playerShip.renderShip();
+    renderExplosions();
+    drawBorder(); //called after ships
+  }
 }
