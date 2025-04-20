@@ -3,7 +3,7 @@ int numEnemies = 0;
 ArrayList<Lazer> enemyLazers;
 
 void enemyFactory() {
-  int difficultyPoints = 100 * level;
+  int difficultyPoints = 100 * level; //<>//
   while (difficultyPoints >= 100) {
     spawnTier1Enemy();
     difficultyPoints -= 100;
@@ -43,8 +43,7 @@ void updateRenderEnemies() {
   //no more enemies round is over
   if(enemies.isEmpty() == true) {
     level++;
-    levelStart = true;
-    millisOfLevelStart = millis();
+    newRound();
   }
 }
 

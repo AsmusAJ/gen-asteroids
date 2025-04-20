@@ -3,6 +3,7 @@ import java.util.Iterator;
 int level = 0;
 boolean levelStart = true;
 int millisOfLevelStart = 0;
+boolean generated = false;
 
 void setup() {
   fullScreen();
@@ -37,8 +38,11 @@ void draw() {
   }
   else {
     if (levelStart == true) {
-      enemyFactory();
-      if (millis() - millisOfLevelStart < 5000) {
+      if (generated == false) { //ensures only one generation
+        enemyFactory();
+        generated = true;
+      }
+      if (millis() - millisOfLevelStart < 3000) { //waits 3 second to allow generation
         printLevel();
       }
       else {
@@ -63,6 +67,8 @@ void draw() {
 void printLevel() {
   pushStyle(); //saves previous style
   
+  background(color0);
+  
   rectMode(CENTER);
   textAlign(CENTER);
   
@@ -72,7 +78,12 @@ void printLevel() {
   String message = ("Level: " + level);
   text(message, arenaCenterX, arenaCenterY); 
   
-
-  
   popStyle(); //returns previous style
+}
+
+//level should be manually set
+void newRound() {
+  levelStart = true;
+  millisOfLevelStart = millis();
+  generated = false;
 }
