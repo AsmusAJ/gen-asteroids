@@ -10,19 +10,18 @@ class EnemyShip {
     hit = false;
     health = initHealth;
     millisAtHit = 0; //enables invince at start
+    enemyNum = numEnemies++; //sets the enemies number and the updates it for next enemy
     steps = new StepActions[16];
     // Initialize the array, setting specific elements as needed
     for (int i = 0; i < steps.length; i++) {
-      if (i % 2 == 0) {
+      if (i == enemyNum) {
         steps[i] = new StepActions(true);  // First element is set to true
       } else {
         steps[i] = new StepActions(false); // Other elements are set to false
       }
     }
   }
-  
-  //lazers should be added to enemy group array of lazers instead individual arrays for each enemy
-  
+    
   //returns false if player is dead
   boolean updateShip() {
     updateCoordinates();
@@ -119,6 +118,8 @@ class EnemyShip {
   void metroActionsHandler() {
     StepActions current = steps[curStep];
     if (current.fireBullet == true && current.completed == false) {
+      String message = "enemy/" + enemyNum + "/lazer";
+      oscSender.send(new OscMessage(message), remoteAddress);
       fireLazer();
       current.completed = true;
     }
@@ -133,5 +134,6 @@ class EnemyShip {
   float yPos;
   int millisAtHit;
   int health;
+  int enemyNum;
   boolean hit;
 }

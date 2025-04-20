@@ -2,7 +2,6 @@ import java.util.Iterator;
 
 void setup() {
   fullScreen();
-  frameRate(60); //lowers frame rate for performance
   imageMode(CENTER);
   rectMode(CENTER);
   blendMode(REPLACE);
