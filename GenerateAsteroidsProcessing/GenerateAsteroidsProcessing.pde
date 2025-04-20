@@ -30,17 +30,29 @@ void setup() {
 }
 
 void draw() {
-  if (level == 0) {
-    drawStartUpScreen();
-  }
-  else if (level == -1) {
-    drawControlScreen();
+  if (level < 1) {
+    if (level == 0) {
+      drawStartUpScreen();
+    }
+    else if (level == -1) {
+      drawControlScreen();
+    }
+    else if (level == -2) {
+      if (millis() - millisOfLevelStart < 5000) { //5 second death screen
+        drawDeathScreen();
+      }
+      else {
+        level = 0;
+        newRound();
+      }
+    }
   }
   else {
     if (levelStart == true) {
       if (generated == false) { //ensures only one generation
         enemyFactory();
         generated = true;
+        playerShip.millisAtHit = millisOfLevelStart + 4000; //allows for a one second invinc
       }
       if (millis() - millisOfLevelStart < 3000) { //waits 3 second to allow generation
         printLevel();
@@ -60,6 +72,9 @@ void draw() {
       playerShip.renderShip();
       renderExplosions();
       drawBorder(); //called after ships
+      
+      //hud
+      playerShip.drawHealth();
     }
   }
 }
@@ -86,4 +101,5 @@ void newRound() {
   levelStart = true;
   millisOfLevelStart = millis();
   generated = false;
+  playerShip.resetPlayer();
 }

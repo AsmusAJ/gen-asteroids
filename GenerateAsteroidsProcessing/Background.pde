@@ -18,6 +18,7 @@ void drawArena() {
   noStroke();
   fill(color2);
   circle(arenaCenterX, arenaCenterY, arenaDiameter);
+  printFrameRate();
 }
 
 void drawBorder() {
@@ -25,4 +26,20 @@ void drawBorder() {
   stroke(color0);
   strokeWeight(55);
   circle(arenaCenterX, arenaCenterY, arenaDiameter + 55);
+}
+
+
+//for debugging purposes
+void printFrameRate() {
+  pushStyle(); //saves previous style
+  
+  rectMode(CENTER);
+  textAlign(CENTER);
+  
+  fill(color5);
+  textFont(menuFont, 100);
+  
+  text(frameRate, arenaCenterX, arenaCenterY); 
+  
+  popStyle(); //returns previous style
 }

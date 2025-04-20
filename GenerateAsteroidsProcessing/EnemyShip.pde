@@ -1,7 +1,7 @@
 PImage enemySprite;
 
 class EnemyShip {
-  EnemyShip(float spawnXPos, float spawnYPos, int initHealth) {
+  EnemyShip(StepActions[] init, float spawnXPos, float spawnYPos, int initHealth) {
     xPos = spawnXPos;
     yPos = spawnYPos;
     rotation = random(0, 2*PI);  //random spawning direction
@@ -11,15 +11,7 @@ class EnemyShip {
     health = initHealth;
     millisAtHit = 0; //enables invince at start
     enemyNum = numEnemies++; //sets the enemies number and the updates it for next enemy
-    steps = new StepActions[16];
-    // Initialize the array, setting specific elements as needed
-    for (int i = 0; i < steps.length; i++) {
-      if (i == enemyNum) {
-        steps[i] = new StepActions(true);  // First element is set to true
-      } else {
-        steps[i] = new StepActions(false); // Other elements are set to false
-      }
-    }
+    steps = init;
   }
     
   //returns false if enemy is dead

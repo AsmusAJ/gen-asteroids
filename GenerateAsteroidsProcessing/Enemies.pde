@@ -3,17 +3,54 @@ int numEnemies = 0;
 ArrayList<Lazer> enemyLazers;
 
 void enemyFactory() {
-  int difficultyPoints = 100 * level; //<>//
+  int difficultyPoints = 100 * level;
   while (difficultyPoints >= 100) {
-    spawnTier1Enemy();
-    difficultyPoints -= 100;
+    if (difficultyPoints >= 500) {
+      spawnTier2Enemy();
+      difficultyPoints -= 500;
+    }
+    if (difficultyPoints >= 100) {
+      spawnTier1Enemy();
+      difficultyPoints -= 100;
+    }
   }
 }
 
 void spawnTier1Enemy() {
   float[] coordinates = generateRandomCoordinates();
   
-  enemies.add(new EnemyShip(coordinates[0], coordinates[1], 3));
+  int attackBeat = int(random(0, 15.99));
+  
+  StepActions steps[] =  new StepActions[16];
+  
+  // Initialize the array, setting specific elements as needed
+  for (int i = 0; i < steps.length; i++) {
+    if (i == attackBeat) {
+      steps[i] = new StepActions(true);  //element is set to true
+    } else {
+      steps[i] = new StepActions(false); // Other elements are set to false
+    }
+  }
+  
+  enemies.add(new EnemyShip(steps, coordinates[0], coordinates[1], 1));
+}
+
+void spawnTier2Enemy() {
+  float[] coordinates = generateRandomCoordinates();
+  
+  StepActions steps[] =  new StepActions[16];
+  
+  // Initialize the array, setting specific elements as needed
+  for (int i = 0; i < steps.length; i++) {
+    int attackChance = int(random(0, 10.99));
+    if (attackChance < 3) {
+      steps[i] = new StepActions(true);  // element is set to true
+    } else {
+      steps[i] = new StepActions(false); // Other elements are set to false
+    }
+  }
+  
+  enemies.add(new EnemyShip(steps, coordinates[0], coordinates[1], 3));
 }
 
 float[] generateRandomCoordinates() {
@@ -38,6 +75,7 @@ void updateRenderEnemies() {
     }
     else {
       iterator.remove();
+      numEnemies--;
     }
   }
   //no more enemies round is over

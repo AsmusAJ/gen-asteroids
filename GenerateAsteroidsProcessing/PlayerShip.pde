@@ -15,6 +15,8 @@ class PlayerShip {
     rightTurn = false;
     thrust = false;
     hit = false;
+    health = maxHealth;
+    millisAtHit = 0;
     lazers = new ArrayList<Lazer>();
     steps = new StepActions[16];
     // Initialize the array, setting specific elements as needed
@@ -62,7 +64,32 @@ class PlayerShip {
     circle(xPos, yPos, 100); 
   }
   
+  void drawHealth() {
+    pushStyle(); //saves previous style
+    
+    float firstCircleX = -(width/2) + 50;
+    float circleY = -(height/2) + 50;
+    
+    stroke(color1);
+    strokeWeight(10);
+    
+    translate(shipXPos, shipYPos); //moves origin to center of ship
+    
+    for (int i = 1; i <= maxHealth; ++i) {
+      if (health >= i) {
+        fill(color4);
+      }
+      else {
+        fill(color4, 10);
+      }
+      circle(firstCircleX + ((i - 1) * 100), circleY, 50); //places circles at fixed distances
+    }
+    
+    popStyle();
+  }
+  
   void updateShip() {
+    hitHandler();
     metroActionsHandler();
     turnShip();
     updatePosition();
@@ -135,6 +162,33 @@ class PlayerShip {
     steps[(curStep + 1) % 16].completed = false; //resets the next step to not being completed yet
   }
   
+  //it restarts game (turns level to 0 and calls newRound() if player health - 0
+  void hitHandler() {
+    if (hit == true) {
+      hit = false;
+      int curTime = millis();
+      if ((curTime - millisAtHit) > 500) { //.5 sec invince frames
+        millisAtHit = curTime;
+        if (health > 1) {
+          health--;
+          explosions.add(new Explosion(shipXPos, shipYPos, color(color7), 75));
+        }
+        else {
+          level = -2;
+          newRound();
+        }
+      }
+    }
+  }
+  
+  //resets player upon level start
+  void resetPlayer() {
+    playerShip.rotation = 0;
+    playerShip.shipXPos = arenaCenterX;
+    playerShip.shipYPos = arenaCenterY;
+    playerShip.health = maxHealth; //resets health
+  }
+  
   StepActions steps[];
   ArrayList<Lazer> lazers;
   float maxSpeed;
@@ -144,11 +198,16 @@ class PlayerShip {
   float rotation;
   float velX;
   float velY;
+  int millisAtHit;
+  int maxHealth = 6w;
+  int health;
   boolean leftTurn;
   boolean rightTurn;
   boolean thrust;
   boolean hit;
 }
+
+
 
 void keyPressed() {
   //left and right turn
