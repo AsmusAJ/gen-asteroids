@@ -58,18 +58,74 @@ void spawnTier2Enemy() {
 }
 
 void generateTier1Max() {
+  generateKick();
+  int drumDecider = int(random(2.99));
+  
+  if (drumDecider == 0) {
+    generateKick();
+  }
+  else if (drumDecider == 1) {
+    generateSnare(); 
+  }
+  else{
+    generateClosedHat();
+  }
+}
+
+void generateKick() {
   float frequency = C1;
   
   String message = "tier1/num" + numTier1 + "/frequency/" + frequency;
   oscSender.send(new OscMessage(message), remoteAddress);
   
-  float kickEnvelope = random (50, 200);
-  message = "tier1/num" + numTier1 + "/kickEnvelope/" + kickEnvelope;
+  float pitchEnvelope = random (50, 200);
+  message = "tier1/num" + numTier1 + "/pitchEnvelope/" + "1. 0. 0. " + pitchEnvelope;
   oscSender.send(new OscMessage(message), remoteAddress);
   
-  float kickEnvelope2_1 = random (5, 100);
-  float kickEnvelope2_2 = random (300, 1000);
-  message = "tier1/num" + numTier1 + "/kickEnvelope2/" + kickEnvelope2_1 + " 0 " + kickEnvelope2_2;
+  float ampEnvelope2_1 = random (5, 100);
+  float ampEnvelope2_2 = random (300, 1000);
+  message = "tier1/num" + numTier1 + "/ampEnvelope/" + "0. 0. 1. " + ampEnvelope2_1 + " 0. " + ampEnvelope2_2;
+  oscSender.send(new OscMessage(message), remoteAddress);
+  
+  float staticEnvelope = 0;
+  message = "tier1/num" + numTier1 + "/staticEnvelope/" + staticEnvelope;
+  oscSender.send(new OscMessage(message), remoteAddress);
+}
+
+void generateSnare() {
+  float frequency = C3;
+  
+  String message = "tier1/num" + numTier1 + "/frequency/" + frequency;
+  oscSender.send(new OscMessage(message), remoteAddress);
+  
+  float pitchEnvelope = random (10, 200);
+  message = "tier1/num" + numTier1 + "/pitchEnvelope/" + "1. 0. 0. " + pitchEnvelope;
+  oscSender.send(new OscMessage(message), remoteAddress);
+  
+  float ampEnvelope1 = random (0, 50);
+  float ampEnvelope2 = random (.3, .1);
+  float ampEnvelope3 = random (50, 100);
+  float ampEnvelope4 = random (100, 250);
+  message = "tier1/num" + numTier1 + "/ampEnvelope/" + "0. 0. 1. " + ampEnvelope1 + " " 
+            + ampEnvelope2 + " " + ampEnvelope3 + " 0. " + ampEnvelope4;
+  oscSender.send(new OscMessage(message), remoteAddress);
+  
+  float staticEnvelope1 = random(.3, .1);
+  float staticEnvelope2 = random(10, 200);
+  float staticEnvelope3 = random(200, 400);
+  message = "tier1/num" + numTier1 + "/staticEnvelope/" + "0. 0. .5 0. " + staticEnvelope1 + " "
+            + staticEnvelope2 + " 0. " + staticEnvelope3;
+  oscSender.send(new OscMessage(message), remoteAddress);
+}
+
+void generateClosedHat() {
+  String message = "tier1/num" + numTier1 + "/pitchEnvelope/" + "0";
+  oscSender.send(new OscMessage(message), remoteAddress);
+  
+  message = "tier1/num" + numTier1 + "/ampEnvelope/" + "0."; 
+  oscSender.send(new OscMessage(message), remoteAddress);
+  
+  message = "tier1/num" + numTier1 + "/staticEnvelope/" + "0. 0. 1. 0. 0. 15.";
   oscSender.send(new OscMessage(message), remoteAddress);
 }
 
