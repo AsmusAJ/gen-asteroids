@@ -5,11 +5,11 @@ int numTier2 = 0;
 ArrayList<Lazer> enemyLazers;
 
 void enemyFactory() {
-  int difficultyPoints = 100 * level;
+  int difficultyPoints = 200 * level;
   while (difficultyPoints >= 100) {
-    if (difficultyPoints >= 500) {
+    if (difficultyPoints >= 1000) {
       spawnTier2Enemy();
-      difficultyPoints -= 500;
+      difficultyPoints -= 1000;
     }
     if (difficultyPoints >= 100) {
       spawnTier1Enemy();
@@ -72,10 +72,26 @@ void generateTier1Max() {
   }
 }
 
+//NEED TO DO: decide which scale and decide if repeating melody
+void generateTier2Max() { 
+  String message = "tier2/num" + numTier2 + "/volume/.6";
+  oscSender.send(new OscMessage(message), remoteAddress);
+  
+  int waveType = int(random(3.99)); 
+  message = "tier2/num" + numTier2 + "/wave/" + waveType + 1; //+1 is  to change the index
+  oscSender.send(new OscMessage(message), remoteAddress);
+  
+  generateADSR(2, numTier2);
+  generateFilter(2, numTier2);
+}
+
 void generateKick() {
   float frequency = C1;
   
-  String message = "tier1/num" + numTier1 + "/frequency/" + frequency;
+  String message = "tier1/num" + numTier1 + "/volume/.6";
+  oscSender.send(new OscMessage(message), remoteAddress);
+  
+  message = "tier1/num" + numTier1 + "/frequency/" + frequency;
   oscSender.send(new OscMessage(message), remoteAddress);
   
   float pitchEnvelope = random (50, 200);
@@ -95,7 +111,11 @@ void generateKick() {
 void generateSnare() {
   float frequency = C3;
   
-  String message = "tier1/num" + numTier1 + "/frequency/" + frequency;
+  String message = "tier1/num" + numTier1 + "/volume/.3";
+  oscSender.send(new OscMessage(message), remoteAddress);
+  
+  
+  message = "tier1/num" + numTier1 + "/frequency/" + frequency;
   oscSender.send(new OscMessage(message), remoteAddress);
   
   float pitchEnvelope = random (10, 200);
@@ -119,13 +139,65 @@ void generateSnare() {
 }
 
 void generateClosedHat() {
-  String message = "tier1/num" + numTier1 + "/pitchEnvelope/" + "0";
+  String message = "tier1/num" + numTier1 + "/volume/.5";
+  oscSender.send(new OscMessage(message), remoteAddress);
+  
+  message = "tier1/num" + numTier1 + "/pitchEnvelope/" + "0";
   oscSender.send(new OscMessage(message), remoteAddress);
   
   message = "tier1/num" + numTier1 + "/ampEnvelope/" + "0."; 
   oscSender.send(new OscMessage(message), remoteAddress);
   
   message = "tier1/num" + numTier1 + "/staticEnvelope/" + "0. 0. 1. 0. 0. 15.";
+  oscSender.send(new OscMessage(message), remoteAddress);
+}
+
+void generateFilter(int tier, int numTier) {
+  int filterType = int(random(2.99));
+  
+  String message = "tier" + tier + "/num" + numTier + "/filterType/" + (filterType + 1); 
+  oscSender.send(new OscMessage(message), remoteAddress);
+  
+  if (filterType == 0) { //lowPass
+    message = "tier" + tier + "/num" + numTier + "/lowCutOff/20";
+    
+    float highCutOff = random(2000, 10000);
+    message = "tier" + tier + "/num" + numTier + "/highCutOff/" + highCutOff;
+  }
+  else if (filterType == 1) { //highPass
+    float lowCutOff = random(20, 2000);
+    message = "tier" + tier + "/num" + numTier + "/lowCutOff/" + lowCutOff;
+    
+    message = "tier" + tier + "/num" + numTier + "/highCutOff/10000";
+  }
+  else{ //bandPass
+    float lowCutOff = random(4000);
+    message = "tier" + tier + "/num" + numTier + "/lowCutOff/" + lowCutOff;
+    
+    float highCutOff = random(lowCutOff, 10000);
+    message = "tier" + tier + "/num" + numTier + "/highCutOff/" + highCutOff;
+  }
+  
+  //sets quality
+  float quality = random(.7);
+  message = "tier" + tier + "/num" + numTier + "/quality/" + quality;
+}
+
+void generateADSR(int tier, int numTier) {
+  float attackGain = random(0, 1);
+  float attackTime = random(0, 500);
+  float decayGain = random(0, attackGain);
+  float decayTime = random(attackTime, 750);
+  float sustainGain = random(0, decayGain);
+  float sustainTime = random(decayTime, 1000);
+  float releaseTime = random (sustainTime, 1000);
+  
+  
+  String ADSR = "0. 0. " + attackGain + " " + attackTime + " "
+                         + decayGain + " " + decayTime + " "
+                         + sustainGain + " " + sustainTime + " "
+                         + "0. " + releaseTime;
+  String message = "tier" + tier + "/num" + numTier + "/envelope/" + ADSR;
   oscSender.send(new OscMessage(message), remoteAddress);
 }
 
