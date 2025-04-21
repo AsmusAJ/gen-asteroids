@@ -1,7 +1,7 @@
 PImage enemySprite;
 
 class EnemyShip {
-  EnemyShip(StepActions[] init, float spawnXPos, float spawnYPos, int initHealth) {
+  EnemyShip(StepActions[] init, float spawnXPos, float spawnYPos, int initHealth, int initTier) {
     xPos = spawnXPos;
     yPos = spawnYPos;
     rotation = random(0, 2*PI);  //random spawning direction
@@ -10,7 +10,14 @@ class EnemyShip {
     hit = false;
     health = initHealth;
     millisAtHit = 0; //enables invince at start
-    enemyNum = numEnemies++; //sets the enemies number and the updates it for next enemy
+    numEnemies++; //sets the enemies number ipdated
+    tier = initTier;
+    if (tier == 1) {
+      tierNum = numTier1++;
+    }
+    else if (tier == 2) {
+      tierNum = numTier2++;
+    }
     steps = init;
   }
     
@@ -45,6 +52,7 @@ class EnemyShip {
         }
         else {
           explosions.add(new Explosion(xPos, yPos, color(color4), 200));
+          
           return false;
         }
       }
@@ -110,7 +118,7 @@ class EnemyShip {
   void metroActionsHandler() {
     StepActions current = steps[curStep];
     if (current.fireBullet == true && current.completed == false) {
-      String message = "enemy/" + enemyNum + "/lazer";
+      String message = "tier" + tier + "/num" + tierNum + "/lazer";
       oscSender.send(new OscMessage(message), remoteAddress);
       fireLazer();
       current.completed = true;
@@ -124,8 +132,9 @@ class EnemyShip {
   float rotation;
   float xPos;
   float yPos;
+  int tier;
   int millisAtHit;
   int health;
-  int enemyNum;
+  int tierNum;
   boolean hit;
 }

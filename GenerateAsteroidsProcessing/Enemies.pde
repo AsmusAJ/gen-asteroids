@@ -1,5 +1,7 @@
 ArrayList<EnemyShip> enemies;
 int numEnemies = 0;
+int numTier1 = 0;
+int numTier2 = 0;
 ArrayList<Lazer> enemyLazers;
 
 void enemyFactory() {
@@ -32,7 +34,7 @@ void spawnTier1Enemy() {
     }
   }
   
-  enemies.add(new EnemyShip(steps, coordinates[0], coordinates[1], 1));
+  enemies.add(new EnemyShip(steps, coordinates[0], coordinates[1], 1, 1));
 }
 
 void spawnTier2Enemy() {
@@ -50,7 +52,7 @@ void spawnTier2Enemy() {
     }
   }
   
-  enemies.add(new EnemyShip(steps, coordinates[0], coordinates[1], 3));
+  enemies.add(new EnemyShip(steps, coordinates[0], coordinates[1], 3, 2));
 }
 
 float[] generateRandomCoordinates() {
@@ -75,6 +77,12 @@ void updateRenderEnemies() {
     }
     else {
       iterator.remove();
+      if (curShip.tier == 1) {
+        numTier1--;
+      }
+      else if (curShip.tier == 2) {
+        numTier2--;
+      }
       numEnemies--;
     }
   }

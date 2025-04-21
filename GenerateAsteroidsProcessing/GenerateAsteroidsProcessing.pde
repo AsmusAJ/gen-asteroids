@@ -98,6 +98,7 @@ void printLevel() {
 
 //level should be manually set
 void newRound() {
+  enemies.clear();
   levelStart = true;
   millisOfLevelStart = millis();
   generated = false;

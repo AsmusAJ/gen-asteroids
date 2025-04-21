@@ -48,8 +48,10 @@ void drawStartUpScreen() {
   
   fill(color5);
   textFont(menuFont, 75);
-  text("New Game : w", arenaCenterX, arenaCenterY + 75); 
-  text("Controls : s", arenaCenterX, arenaCenterY + 225);
+  text("New Game", arenaCenterX, arenaCenterY + 75); 
+  text("Controls", arenaCenterX, arenaCenterY + 225);
+  textFont(menuFont, 40);
+  text("W, S to Select, Enter/Return to Confirm", arenaCenterX, height - 20);
   
   if (key == ENTER || key == RETURN) {
     if (newGame == true) { //starts game

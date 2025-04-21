@@ -15,6 +15,8 @@ class PlayerShip {
     rightTurn = false;
     thrust = false;
     hit = false;
+    shieldUp = true;
+    shieldUpdated = false;
     health = maxHealth;
     millisAtHit = 0;
     lazers = new ArrayList<Lazer>();
@@ -40,6 +42,14 @@ class PlayerShip {
       circle(-20, 0, 15);
     }
     drawShip(0, 0);
+    if (shieldUp == false) {
+      fill(#3c5e8b, 20); //lighter glow
+      circle(0, 0, 100);
+    }
+    else {
+      fill(#3c5e8b, 70); //darker glow
+      circle(0, 0, 100);
+    }
     popMatrix(); //restores matrix
   }
   
@@ -58,10 +68,7 @@ class PlayerShip {
     triangle(xPos - 20, yPos + 30, xPos - 30, yPos + 32, xPos - 20, yPos + 10); //bottom wing tip
     
     fill(#3c5e8b);//blue
-    ellipse(xPos - 5, yPos, 15, 8);
-    
-    fill(#3c5e8b, 20); //lighter glow
-    circle(xPos, yPos, 100); 
+    ellipse(xPos - 5, yPos, 15, 8); 
   }
   
   void drawHealth() {
@@ -89,6 +96,10 @@ class PlayerShip {
   }
   
   void updateShip() {
+    if ((millis() - millisAtShieldDown > 5000) && (shieldUpdated == false)) {
+      shieldUp = true;
+      shieldUpdated = true;
+    }
     hitHandler();
     metroActionsHandler();
     turnShip();
@@ -169,15 +180,22 @@ class PlayerShip {
       int curTime = millis();
       if ((curTime - millisAtHit) > 500) { //.5 sec invince frames
         millisAtHit = curTime;
-        if (health > 1) {
-          health--;
-          explosions.add(new Explosion(shipXPos, shipYPos, color(color7), 75));
+        if (shieldUp == false) {
+          if (health > 1) {
+            health--;
+            explosions.add(new Explosion(shipXPos, shipYPos, color(color7), 75));
+          }
+          else {
+            level = -2;
+            newRound();
+          }
         }
-        else {
-          level = -2;
-          newRound();
+        else { //shieldUp == true
+          millisAtShieldDown = millis();
+          shieldUp = false;
+          shieldUpdated = false;
         }
-      }
+      }//if shieldUp
     }
   }
   
@@ -198,9 +216,12 @@ class PlayerShip {
   float rotation;
   float velX;
   float velY;
+  int millisAtShieldDown;
   int millisAtHit;
-  int maxHealth = 6w;
+  int maxHealth = 6;
   int health;
+  boolean shieldUp;
+  boolean shieldUpdated;
   boolean leftTurn;
   boolean rightTurn;
   boolean thrust;
