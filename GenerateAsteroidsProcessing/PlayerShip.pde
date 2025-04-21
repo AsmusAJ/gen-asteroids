@@ -29,6 +29,7 @@ class PlayerShip {
         steps[i] = new StepActions(0, false); // Other elements are set to false
       }
     }
+    generatePlayerMax();
   }
   
   void renderShip() {
@@ -166,9 +167,9 @@ class PlayerShip {
   void metroActionsHandler() {
     StepActions current = steps[curStep];
     if (current.fireBullet == true && current.completed == false) {
-      String message = "playerShip/noteFrequency/" + pickNote();
+      String message = "tier2/num-1/noteFrequency/" + pickNote();
       oscSender.send(new OscMessage(message), remoteAddress);
-      message = "playerShipaw/lazer";
+      message = "tier2/num-1/lazer";
       oscSender.send(new OscMessage(message), remoteAddress);
       playerShip.lazers.add(new Lazer(30, playerShip.shipXPos, playerShip.shipYPos, 
                           playerShip.rotation, color(color4)));
@@ -205,11 +206,32 @@ class PlayerShip {
   
   //resets player upon level start
   void resetPlayer() {
-    playerShip.rotation = 0;
-    playerShip.shipXPos = arenaCenterX;
-    playerShip.shipYPos = arenaCenterY;
-    playerShip.health = maxHealth; //resets health
+    rotation = 0;
+    shipXPos = arenaCenterX;
+    shipYPos = arenaCenterY;
+    health = maxHealth; //resets health
+    generatePlayerMax();
   }
+  
+  void generatePlayerMax() { 
+  //player will be tier 2 enemy -1 so that we can reuse the code
+  //starts with 0 volume and increases as enemies are killed
+  String message = "tier2/num" + -1 + "/volume/0";
+  oscSender.send(new OscMessage(message), remoteAddress);
+  
+  int waveType = int(random(3.99)) + 1; //+1 is  to change the index
+  message = "tier2/num" + -1 + "/wave/" + waveType;
+  oscSender.send(new OscMessage(message), remoteAddress);
+  
+  if (waveType == 2) { //cycle is not rich so we generate a low pass to not break it
+    generateLowPassFilter(2, -1);
+  }
+  else {
+    generateFilter(2, -1);
+  }
+  
+  generateADSR(2, -1);
+}
   
   StepActions steps[];
   ArrayList<Lazer> lazers;

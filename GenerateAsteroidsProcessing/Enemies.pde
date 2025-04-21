@@ -273,6 +273,11 @@ void updateRenderEnemies() {
         numTier2--;
       }
       numEnemies--;
+      //gradually increase player volume
+      if (numEnemies > 0) {
+          String message = "tier2/num" + -1 + "/volume/" + (0.3 / numEnemies);
+          oscSender.send(new OscMessage(message), remoteAddress);
+      }
     }
   }
   //no more enemies round is over
