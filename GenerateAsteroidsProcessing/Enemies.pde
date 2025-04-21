@@ -34,7 +34,8 @@ void spawnTier1Enemy() {
     }
   }
   
-  enemies.add(new EnemyShip(steps, coordinates[0], coordinates[1], 1, 1));
+  generateTier1Max();
+  enemies.add(new EnemyShip(steps, coordinates[0], coordinates[1], 1, 1)); //<>//
 }
 
 void spawnTier2Enemy() {
@@ -53,6 +54,23 @@ void spawnTier2Enemy() {
   }
   
   enemies.add(new EnemyShip(steps, coordinates[0], coordinates[1], 3, 2));
+  
+}
+
+void generateTier1Max() {
+  float frequency = C1;
+  
+  String message = "tier1/num" + numTier1 + "/frequency/" + frequency;
+  oscSender.send(new OscMessage(message), remoteAddress);
+  
+  float kickEnvelope = random (50, 200);
+  message = "tier1/num" + numTier1 + "/kickEnvelope/" + kickEnvelope;
+  oscSender.send(new OscMessage(message), remoteAddress);
+  
+  float kickEnvelope2_1 = random (5, 100);
+  float kickEnvelope2_2 = random (300, 1000);
+  message = "tier1/num" + numTier1 + "/kickEnvelope2/" + kickEnvelope2_1 + " 0 " + kickEnvelope2_2;
+  oscSender.send(new OscMessage(message), remoteAddress);
 }
 
 float[] generateRandomCoordinates() {
