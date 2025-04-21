@@ -22,3 +22,19 @@ class Metronome {
   int timeOfLastStep;
   int bpm;
 }
+
+//decides what to do on this step
+class StepActions {
+  StepActions(float initFrequency, boolean initBullet) {
+    fireBullet = initBullet;
+    if (fireBullet == true) {
+      frequency = initFrequency; //if shooting on this frame sets frequency
+    }
+    else {
+      frequency = 0;
+    }
+  }
+  float frequency;
+  boolean fireBullet = false; //if true shoots on this fram
+  boolean completed = false;
+}

@@ -28,9 +28,9 @@ void spawnTier1Enemy() {
   // Initialize the array, setting specific elements as needed
   for (int i = 0; i < steps.length; i++) {
     if (i == attackBeat) {
-      steps[i] = new StepActions(true);  //element is set to true
+      steps[i] = new StepActions(0, true);  //element is set to true
     } else {
-      steps[i] = new StepActions(false); // Other elements are set to false
+      steps[i] = new StepActions(0, false); // Other elements are set to false
     }
   }
   
@@ -38,6 +38,7 @@ void spawnTier1Enemy() {
   enemies.add(new EnemyShip(steps, coordinates[0], coordinates[1], 1, 1)); //<>//
 }
 
+//generates an enemy which fires on more than one note with set frequencies
 void spawnTier2Enemy() {
   float[] coordinates = generateRandomCoordinates();
   
@@ -47,14 +48,14 @@ void spawnTier2Enemy() {
   for (int i = 0; i < steps.length; i++) {
     int attackChance = int(random(0, 10.99));
     if (attackChance < 3) {
-      steps[i] = new StepActions(true);  // element is set to true
+      steps[i] = new StepActions(pickNote(), true);  // element is set to true and note is decided
     } else {
-      steps[i] = new StepActions(false); // Other elements are set to false
+      steps[i] = new StepActions(0, false); // Other elements are set to false
     }
   }
   
+  generateTier2Max();
   enemies.add(new EnemyShip(steps, coordinates[0], coordinates[1], 3, 2));
-  
 }
 
 void generateTier1Max() {
@@ -72,23 +73,40 @@ void generateTier1Max() {
   }
 }
 
-//NEED TO DO: decide which scale and decide if repeating melody
 void generateTier2Max() { 
-  String message = "tier2/num" + numTier2 + "/volume/.6";
+  String message = "tier2/num" + numTier2 + "/volume/.3"; //<>//
   oscSender.send(new OscMessage(message), remoteAddress);
   
-  int waveType = int(random(3.99)); 
-  message = "tier2/num" + numTier2 + "/wave/" + waveType + 1; //+1 is  to change the index
+  int waveType = int(random(3.99)) + 1; //+1 is  to change the index
+  message = "tier2/num" + numTier2 + "/wave/" + waveType;
   oscSender.send(new OscMessage(message), remoteAddress);
+  
+  if (waveType == 2) { //cycle is not rich so we generate a low pass to not break it
+    generateLowPassFilter(2, numTier2);
+  }
+  else {
+    generateFilter(2, numTier2);
+  }
   
   generateADSR(2, numTier2);
-  generateFilter(2, numTier2);
+}
+
+float pickNote() {
+  float[] noteScale;
+  if (scale == 0) {
+    noteScale = cPentatonic;
+  }
+  else {
+    noteScale = cPentatonicMinor;
+  }
+  
+  return noteScale[drunkRandomMod10()];
 }
 
 void generateKick() {
   float frequency = C1;
   
-  String message = "tier1/num" + numTier1 + "/volume/.6";
+  String message = "tier1/num" + numTier1 + "/volume/.7";
   oscSender.send(new OscMessage(message), remoteAddress);
   
   message = "tier1/num" + numTier1 + "/frequency/" + frequency;
@@ -136,7 +154,7 @@ void generateSnare() {
   message = "tier1/num" + numTier1 + "/staticEnvelope/" + "0. 0. .5 0. " + staticEnvelope1 + " "
             + staticEnvelope2 + " 0. " + staticEnvelope3;
   oscSender.send(new OscMessage(message), remoteAddress);
-}
+} //<>//
 
 void generateClosedHat() {
   String message = "tier1/num" + numTier1 + "/volume/.5";
@@ -152,6 +170,24 @@ void generateClosedHat() {
   oscSender.send(new OscMessage(message), remoteAddress);
 }
 
+//allows for cycle to dodge going to through filters
+void generateLowPassFilter(int tier, int numTier) {
+  String message = "tier" + tier + "/num" + numTier + "/filterType/1"; 
+  oscSender.send(new OscMessage(message), remoteAddress);
+  
+  message = "tier" + tier + "/num" + numTier + "/lowCutOff/20";
+  oscSender.send(new OscMessage(message), remoteAddress);
+  
+  float highCutOff = random(2000, 10000);
+  message = "tier" + tier + "/num" + numTier + "/highCutOff/" + highCutOff;
+  oscSender.send(new OscMessage(message), remoteAddress);
+    
+  //sets quality
+  float quality = random(.7);
+  message = "tier" + tier + "/num" + numTier + "/quality/" + quality;
+  oscSender.send(new OscMessage(message), remoteAddress);
+}
+
 void generateFilter(int tier, int numTier) {
   int filterType = int(random(2.99));
   
@@ -160,31 +196,38 @@ void generateFilter(int tier, int numTier) {
   
   if (filterType == 0) { //lowPass
     message = "tier" + tier + "/num" + numTier + "/lowCutOff/20";
+    oscSender.send(new OscMessage(message), remoteAddress);
     
     float highCutOff = random(2000, 10000);
     message = "tier" + tier + "/num" + numTier + "/highCutOff/" + highCutOff;
+    oscSender.send(new OscMessage(message), remoteAddress);
   }
   else if (filterType == 1) { //highPass
     float lowCutOff = random(20, 2000);
     message = "tier" + tier + "/num" + numTier + "/lowCutOff/" + lowCutOff;
+    oscSender.send(new OscMessage(message), remoteAddress);
     
     message = "tier" + tier + "/num" + numTier + "/highCutOff/10000";
+    oscSender.send(new OscMessage(message), remoteAddress);
   }
   else{ //bandPass
     float lowCutOff = random(4000);
     message = "tier" + tier + "/num" + numTier + "/lowCutOff/" + lowCutOff;
+    oscSender.send(new OscMessage(message), remoteAddress);
     
     float highCutOff = random(lowCutOff, 10000);
     message = "tier" + tier + "/num" + numTier + "/highCutOff/" + highCutOff;
+    oscSender.send(new OscMessage(message), remoteAddress);
   }
   
   //sets quality
   float quality = random(.7);
   message = "tier" + tier + "/num" + numTier + "/quality/" + quality;
+  oscSender.send(new OscMessage(message), remoteAddress);
 }
 
 void generateADSR(int tier, int numTier) {
-  float attackGain = random(0, 1);
+  float attackGain = 1;
   float attackTime = random(0, 500);
   float decayGain = random(0, attackGain);
   float decayTime = random(attackTime, 750);
@@ -253,4 +296,52 @@ void updateEnemyLazers() {
       curLazer.enemyLazerHandler();
     }
   }
+}
+
+//last number picked by randomMod10
+int lastPicked = 0;
+
+//returns ints which randomly move small steps to emulate real melodies
+//except for when it gets to the top/bottom but we dont talk about that
+int drunkRandomMod10() {
+  float randomNum = random(100); //<>//
+  
+  if (randomNum < 10) {
+    lastPicked = lastPicked % 10;
+  }
+  else if ((randomNum >= 10) && (randomNum < 30)) {
+    lastPicked = (lastPicked - 1) % 10;
+  }
+  else if ((randomNum >= 30) && (randomNum < 50)) {
+    lastPicked = (lastPicked + 1) % 10;
+  }
+  else if ((randomNum >= 50) && (randomNum < 60)) {
+    lastPicked = (lastPicked + 2) % 10;
+  }
+  else if ((randomNum >= 60) && (randomNum < 70)) {
+    lastPicked = (lastPicked - 2) % 10;
+  }
+  else if ((randomNum >= 70) && (randomNum < 75)) {
+    lastPicked = (lastPicked - 3) % 10;
+  }
+  else if ((randomNum >= 75) && (randomNum < 80)) {
+    lastPicked = (lastPicked + 3) % 10;
+  }
+  else if ((randomNum >= 80) && (randomNum < 85)) {
+    lastPicked = (lastPicked - 4) % 10;
+  }
+  else if ((randomNum >= 85) && (randomNum < 90)) {
+    lastPicked = (lastPicked + 4) % 10;
+  }
+  else if ((randomNum >= 90) && (randomNum < 95)) {
+    lastPicked = (lastPicked - 5) % 10;
+  }
+  else if ((randomNum >= 95) && (randomNum < 100)) {
+    lastPicked = (lastPicked + 5) % 10;
+  }
+  //sets negative numbers to C as this will stop out of bounds help establish tonal center
+  if (lastPicked < 0) { 
+    lastPicked = 0;
+  }
+  return lastPicked;
 }

@@ -24,9 +24,9 @@ class PlayerShip {
     // Initialize the array, setting specific elements as needed
     for (int i = 0; i < steps.length; i++) {
       if (i % 2 == 0) {
-        steps[i] = new StepActions(true);  // First element is set to true
+        steps[i] = new StepActions(0, true);  // First element is set to true
       } else {
-        steps[i] = new StepActions(false); // Other elements are set to false
+        steps[i] = new StepActions(0, false); // Other elements are set to false
       }
     }
   }
@@ -166,6 +166,10 @@ class PlayerShip {
   void metroActionsHandler() {
     StepActions current = steps[curStep];
     if (current.fireBullet == true && current.completed == false) {
+      String message = "playerShip/noteFrequency/" + pickNote();
+      oscSender.send(new OscMessage(message), remoteAddress);
+      message = "playerShipaw/lazer";
+      oscSender.send(new OscMessage(message), remoteAddress);
       playerShip.lazers.add(new Lazer(30, playerShip.shipXPos, playerShip.shipYPos, 
                           playerShip.rotation, color(color4)));
       current.completed = true;
@@ -256,12 +260,4 @@ void keyReleased() {
   if (key == 'w') {
     playerShip.thrust = false;
   }
-}
-
-class StepActions {
-  StepActions(boolean initBullet) {
-    fireBullet = initBullet;
-  }
-  boolean fireBullet = false;
-  boolean completed = false;
 }

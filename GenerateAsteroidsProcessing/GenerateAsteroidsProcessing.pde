@@ -1,6 +1,7 @@
 import java.util.Iterator;
 
 int level = 0;
+int scale = 0; //0 is major 1 is minor
 boolean levelStart = true;
 int millisOfLevelStart = 0;
 boolean generated = false;
@@ -106,4 +107,10 @@ void newRound() {
   millisOfLevelStart = millis();
   generated = false;
   playerShip.resetPlayer();
+  pickScale();
+}
+
+//picks between major and minor pentatonic scales
+void pickScale() {
+  scale= int(random(1.99));
 }

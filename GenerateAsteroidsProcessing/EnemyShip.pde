@@ -118,7 +118,9 @@ class EnemyShip {
   void metroActionsHandler() {
     StepActions current = steps[curStep];
     if (current.fireBullet == true && current.completed == false) {
-      String message = "tier" + tier + "/num" + tierNum + "/lazer";
+      String message = "tier" + tier + "/num" + tierNum + "/noteFrequency/" + current.frequency;
+      oscSender.send(new OscMessage(message), remoteAddress);
+      message = "tier" + tier + "/num" + tierNum + "/lazer";
       oscSender.send(new OscMessage(message), remoteAddress);
       fireLazer();
       current.completed = true;

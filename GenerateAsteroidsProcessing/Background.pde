@@ -37,9 +37,9 @@ void printFrameRate() {
   textAlign(CENTER);
   
   fill(color5);
-  textFont(menuFont, 100);
+  textFont(menuFont, 250);
   
-  text(frameRate, arenaCenterX, arenaCenterY); 
+  text(level, arenaCenterX, arenaCenterY); 
   
   popStyle(); //returns previous style
 }
