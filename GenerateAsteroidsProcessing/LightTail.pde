@@ -1,3 +1,7 @@
+//DID NOT USE
+//COULD BE USEFUL IN FUTURE UPDATES
+
+
 class LightTail {
   //initLengthOfTail is the number of points in it
   LightTail(int initLengthOfTail, int initXLocation, int initYLocation, color initColor) {
