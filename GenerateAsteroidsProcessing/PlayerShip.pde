@@ -1,6 +1,7 @@
 PImage playerSprite;
 
 PlayerShip playerShip;
+boolean zenMode = false;
 
 class PlayerShip {
   PlayerShip(int spawnXPos, int spawnYPos) {
@@ -180,27 +181,29 @@ class PlayerShip {
   
   //it restarts game (turns level to 0 and calls newRound() if player health - 0
   void hitHandler() {
-    if (hit == true) {
-      hit = false;
-      int curTime = millis();
-      if ((curTime - millisAtHit) > 500) { //.5 sec invince frames
-        millisAtHit = curTime;
-        if (shieldUp == false) {
-          if (health > 1) {
-            health--;
-            explosions.add(new Explosion(shipXPos, shipYPos, color(color7), 75));
+    if (zenMode == false) {
+      if (hit == true) {
+        hit = false;
+        int curTime = millis();
+        if ((curTime - millisAtHit) > 500) { //.5 sec invince frames
+          millisAtHit = curTime;
+          if (shieldUp == false) {
+            if (health > 1) {
+              health--;
+              explosions.add(new Explosion(shipXPos, shipYPos, color(color7), 75));
+            }
+            else {
+              level = -2;
+              newRound();
+            }
           }
-          else {
-            level = -2;
-            newRound();
+          else { //shieldUp == true
+            millisAtShieldDown = millis();
+            shieldUp = false;
+            shieldUpdated = false;
           }
-        }
-        else { //shieldUp == true
-          millisAtShieldDown = millis();
-          shieldUp = false;
-          shieldUpdated = false;
-        }
-      }//if shieldUp
+        }//if shieldUp
+      }
     }
   }
   

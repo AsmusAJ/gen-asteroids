@@ -1,8 +1,11 @@
 PFont menuFont;
 boolean newGame;
+int selected = 0;
 
 void drawStartUpScreen() {
   pushStyle(); //saves previous style
+  
+
   
   background(color0);
   rectMode(CENTER);
@@ -11,55 +14,94 @@ void drawStartUpScreen() {
   //draw header
   //stroke text
   fill(color6);
-  textFont(menuFont);
-  text("GEN-ASTEROIDS", arenaCenterX - 5, arenaCenterY - 120); 
+  textFont(menuFont, 130);
+  text("GEN-ASTEROIDS", arenaCenterX - 5, arenaCenterY - 150); 
   //main text
   fill(color5);
-  textFont(menuFont);
-  text("GEN-ASTEROIDS", arenaCenterX, arenaCenterY - 125); 
+  textFont(menuFont, 130);
+  text("GEN-ASTEROIDS", arenaCenterX, arenaCenterY - 145); 
   //subheading
   textFont(menuFont, 40);
-  text("Created By Anthony Asmus", arenaCenterX, arenaCenterY - 60); 
+  text("Created By Anthony Asmus", arenaCenterX, arenaCenterY - 110); 
   
   
   strokeWeight(10); //creates highlight around boxes
   
   //highlights only selected box
-  //highlights first box
-  if (key == 'w') {
-    stroke(color6);
-    newGame = true;
+  if (key == 'w' && keyPressed) {
+    selected--;
+    if (selected < 0) {
+      selected = 0;
+    }
+    key = 'p';
   }
-  else if (key == 's') {
-    noStroke();
+  else if (key == 's' && keyPressed) {
+    selected++;
+    if (selected > 2) {
+      selected = 2;
+    }
+    key = 'p';
   }
-  fill(color2);
-  rect(arenaCenterX, arenaCenterY + 50, 700, 100, 10);
   
-  //highlights second box
-  if (key == 's') {
+  noStroke();
+  fill(color2);
+  strokeWeight(10);
+  
+  pushStyle();
+  //first box selected
+  if (selected == 0) {
     stroke(color6);
-    newGame = false;
   }
-  else if (key == 'w') {
-    noStroke();
+  
+  rect(arenaCenterX, arenaCenterY, 700, 100, 10);
+  
+  popStyle();
+  pushStyle();
+  
+  //second box selected
+  if (selected == 1) {
+    stroke(color6);
   }
-  rect(arenaCenterX, arenaCenterY + 200, 700, 100, 10);
+  
+  rect(arenaCenterX, arenaCenterY + 150, 700, 100, 10);
+  
+  popStyle();
+  pushStyle();
+  
+  //third box selected
+  if (selected == 2) {
+    stroke(color6);
+  }
+  
+  rect(arenaCenterX, arenaCenterY + 300, 700, 100, 10);
+  
+  popStyle();
+
   
   fill(color5);
   textFont(menuFont, 75);
-  text("New Game", arenaCenterX, arenaCenterY + 75); 
-  text("Controls", arenaCenterX, arenaCenterY + 225);
+  text("New Game", arenaCenterX, arenaCenterY + 25); 
+  text("Zen Mode", arenaCenterX, arenaCenterY + 175);
+  text("Controls", arenaCenterX, arenaCenterY + 325);
   textFont(menuFont, 40);
   text("W, S to Select, Enter/Return to Confirm", arenaCenterX, height - 20);
   
   if (key == ENTER || key == RETURN) {
-    if (newGame == true) { //starts game
+    if (selected == 0) { //starts game
+      zenMode = false;
       level++;
       millisOfLevelStart = millis();
+      selected = 0;
     }
-    else { //goes to controls
+    else if (selected == 1) { //zen mode
+      zenMode = true;
+      level++;
+      millisOfLevelStart = millis();
+      selected = 0;
+    }
+    else if (selected == 2) { //controls
       level--;
+      selected = 0;
     }
   }
   
