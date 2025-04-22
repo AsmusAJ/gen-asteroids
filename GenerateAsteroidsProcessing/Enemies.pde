@@ -1,15 +1,24 @@
 ArrayList<EnemyShip> enemies;
-int numEnemies = 0;
+int numEnemies = 0; //for bookkeeping
 int numTier1 = 0;
 int numTier2 = 0;
 ArrayList<Lazer> enemyLazers;
 
+//makes level progressivly more difficult
 void enemyFactory() {
   int difficultyPoints = 200 * level;
   while (difficultyPoints >= 100) {
-    if (difficultyPoints >= 1000) {
+    if (level <= 20) {
+      if (difficultyPoints >= 1000) {
       spawnTier2Enemy();
       difficultyPoints -= 1000;
+      }
+    }
+    else {
+      if (difficultyPoints >= 1500) {
+        spawnTier2Enemy();
+        difficultyPoints -= 1500;
+      }
     }
     if (difficultyPoints >= 100) {
       spawnTier1Enemy();
@@ -21,7 +30,7 @@ void enemyFactory() {
 void spawnTier1Enemy() {
   float[] coordinates = generateRandomCoordinates();
   
-  int attackBeat = int(random(0, 15.99));
+  int attackBeat = int(random(0, 15.99)); //picks beat to gire on
   
   StepActions steps[] =  new StepActions[16];
   
@@ -62,6 +71,7 @@ void generateTier1Max() {
   generateKick();
   int drumDecider = int(random(2.99));
   
+  //picks 1 drum to create
   if (drumDecider == 0) {
     generateKick();
   }
@@ -91,6 +101,7 @@ void generateTier2Max() {
   generateADSR(2, numTier2);
 }
 
+//picks a random note from the scale
 float pickNote() {
   float[] noteScale;
   if (scale == 0) {
@@ -103,6 +114,7 @@ float pickNote() {
   return noteScale[drunkRandomMod10()];
 }
 
+//random kick stuff
 void generateKick() {
   float frequency = C1;
   
@@ -132,7 +144,6 @@ void generateSnare() {
   String message = "tier1/num" + numTier1 + "/volume/.3";
   oscSender.send(new OscMessage(message), remoteAddress);
   
-  
   message = "tier1/num" + numTier1 + "/frequency/" + frequency;
   oscSender.send(new OscMessage(message), remoteAddress);
   
@@ -143,7 +154,7 @@ void generateSnare() {
   float ampEnvelope1 = random (0, 50);
   float ampEnvelope2 = random (.3, .1);
   float ampEnvelope3 = random (50, 100);
-  float ampEnvelope4 = random (100, 250);
+  float ampEnvelope4 = random (100, 250); //<>//
   message = "tier1/num" + numTier1 + "/ampEnvelope/" + "0. 0. 1. " + ampEnvelope1 + " " 
             + ampEnvelope2 + " " + ampEnvelope3 + " 0. " + ampEnvelope4;
   oscSender.send(new OscMessage(message), remoteAddress);
@@ -154,7 +165,7 @@ void generateSnare() {
   message = "tier1/num" + numTier1 + "/staticEnvelope/" + "0. 0. .5 0. " + staticEnvelope1 + " "
             + staticEnvelope2 + " 0. " + staticEnvelope3;
   oscSender.send(new OscMessage(message), remoteAddress);
-} //<>//
+}
 
 void generateClosedHat() {
   String message = "tier1/num" + numTier1 + "/volume/.5";
@@ -210,7 +221,7 @@ void generateFilter(int tier, int numTier) {
     message = "tier" + tier + "/num" + numTier + "/highCutOff/10000";
     oscSender.send(new OscMessage(message), remoteAddress);
   }
-  else{ //bandPass
+  else { //bandPass
     float lowCutOff = random(4000);
     message = "tier" + tier + "/num" + numTier + "/lowCutOff/" + lowCutOff;
     oscSender.send(new OscMessage(message), remoteAddress);

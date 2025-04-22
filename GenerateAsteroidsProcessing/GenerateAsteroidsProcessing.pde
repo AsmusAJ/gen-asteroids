@@ -1,10 +1,10 @@
 import java.util.Iterator;
 
-int level = 0;
+int level = 0; 
 int scale = 0; //0 is major 1 is minor
 boolean levelStart = true;
 int millisOfLevelStart = 0;
-boolean generated = false;
+boolean generated = false; //has level been generated
 
 void setup() {
   fullScreen();
@@ -31,48 +31,49 @@ void setup() {
 }
 
 void draw() {
-  if (level < 1) {
+  if (level < 1) { //start up
     if (level == 0) {
       drawStartUpScreen();
     }
-    else if (level == -1) {
+    else if (level == -1) { //control
       drawControlScreen();
     }
-    else if (level == -2) {
+    else if (level == -2) { //death
       if (millis() - millisOfLevelStart < 5000) { //5 second death screen
         drawDeathScreen();
       }
-      else {
+      else { //resets
         level = 0;
         newRound();
       }
     }
   }
   else {
-    if (levelStart == true) {
+    if (levelStart == true) { //start of level
       if (generated == false) { //ensures only one generation
-        enemyFactory();
-        generated = true;
+        enemyFactory(); //generates enemies
+        generated = true; 
         playerShip.millisAtHit = millisOfLevelStart + 4000; //allows for a one second invinc
       }
       if (millis() - millisOfLevelStart < 3000) { //waits 3 second to allow generation
-        printLevel();
+        printLevel(); //level screen
       }
       else {
         levelStart = false;
       }
     }
     else {
+      //general game
       metronome.updateMetronome();
       drawMap();
-      translate(arenaCenterX - playerShip.shipXPos, arenaCenterY - playerShip.shipYPos);
+      translate(arenaCenterX - playerShip.shipXPos, arenaCenterY - playerShip.shipYPos); //map follows player
       drawArena();
       updateRenderEnemies();
       updateEnemyLazers();
       playerShip.updateShip();
       playerShip.renderShip();
       renderExplosions();
-      drawBorder(); //called after ships
+      drawBorder(); //called after ships to block visual glitches
       
       //hud
       playerShip.drawHealth();
@@ -99,6 +100,7 @@ void printLevel() {
 
 //level should be manually set
 void newRound() {
+  //rests all that needs to be reset
   enemies.clear();
   numEnemies = 0;
   numTier1 = 0;

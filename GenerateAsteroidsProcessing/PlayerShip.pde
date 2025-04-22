@@ -261,28 +261,28 @@ class PlayerShip {
 
 void keyPressed() {
   //left and right turn
-  if (key == 'a') {
+  if (key == 'a' || key == 'A') {
     playerShip.leftTurn = true;
   }
-  else if (key == 'd') {
+  else if (key == 'd' || key == 'D') {
     playerShip.rightTurn = true;
   }
   //forward
-  if (key == 'w') {
+  if (key == 'w' || key == 'W') {
     playerShip.thrust = true;
   }
 }
   
 void keyReleased() {
   //left and right turn
-  if (key == 'a') {
+  if (key == 'a' || key == 'A') {
     playerShip.leftTurn = false;
   }
-  else if (key == 'd') {
+  else if (key == 'd' || key == 'D') {
     playerShip.rightTurn = false;
   }
   //forward
-  if (key == 'w') {
+  if (key == 'w' || key == 'W') {
     playerShip.thrust = false;
   }
 }

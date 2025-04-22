@@ -1,8 +1,10 @@
+//useful stuff
 int arenaDiameter = 1500;
 int arenaRadius;
 int arenaCenterX; 
 int arenaCenterY; 
 
+//allows for fullscreen
 void initializeMap() {
   arenaCenterX = width / 2; 
   arenaCenterY = height / 2;
@@ -18,7 +20,7 @@ void drawArena() {
   noStroke();
   fill(color2);
   circle(arenaCenterX, arenaCenterY, arenaDiameter);
-  printFrameRate();
+  printCenterLevel();
 }
 
 void drawBorder() {
@@ -28,9 +30,8 @@ void drawBorder() {
   circle(arenaCenterX, arenaCenterY, arenaDiameter + 55);
 }
 
-
-//for debugging purposes
-void printFrameRate() {
+//prints level at center of screen
+void printCenterLevel() {
   pushStyle(); //saves previous style
   
   rectMode(CENTER);

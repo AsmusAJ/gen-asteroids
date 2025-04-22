@@ -28,14 +28,14 @@ void drawStartUpScreen() {
   strokeWeight(10); //creates highlight around boxes
   
   //highlights only selected box
-  if (key == 'w' && keyPressed) {
+  if ((key == 'w' || key == 'W') && keyPressed) {
     selected--;
     if (selected < 0) {
       selected = 0;
     }
     key = 'p';
   }
-  else if (key == 's' && keyPressed) {
+  else if ((key == 's' || key == 'W') && keyPressed) {
     selected++;
     if (selected > 2) {
       selected = 2;
