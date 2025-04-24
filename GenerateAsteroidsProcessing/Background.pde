@@ -41,6 +41,8 @@ void printCenterLevel() {
   textFont(menuFont, 250);
   
   text(level, arenaCenterX, arenaCenterY); 
+  textFont(menuFont, 25);
+  text("M = Restart", arenaCenterX, arenaCenterY + 25); 
   
   popStyle(); //returns previous style
 }

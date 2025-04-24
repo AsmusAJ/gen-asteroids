@@ -267,6 +267,10 @@ void keyPressed() {
   else if (key == 'd' || key == 'D') {
     playerShip.rightTurn = true;
   }
+  if (key == 'm' || key == 'M') {
+    level = 0;
+    newRound();
+  }
   //forward
   if (key == 'w' || key == 'W') {
     playerShip.thrust = true;
