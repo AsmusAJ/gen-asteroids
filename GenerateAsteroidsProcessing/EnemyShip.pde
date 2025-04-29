@@ -86,13 +86,20 @@ class EnemyShip {
     circle(xPos, yPos, 70); 
     circle(xPos, yPos, 100); 
     
-    fill(#577277);//light grey
+    
+    if(tier == 2) { //nose tip
+      fill(#a53030); //red
+    } 
+    else {//tier ==1
+      fill(#577277);//light grey
+    }
     triangle(xPos + 40, yPos, xPos - 20, yPos - 15, xPos - 20, yPos + 15);
     
     fill(#090a14);//black
+    triangle(xPos + 40, yPos, xPos - 20, yPos - 10, xPos - 20, yPos + 10);
     triangle(xPos - 30, yPos - 32, xPos - 20, yPos - 5, xPos, yPos - 5);
     triangle(xPos - 30, yPos + 32, xPos - 20, yPos + 5, xPos, yPos + 5);
-    triangle(xPos + 40, yPos, xPos - 20, yPos - 10, xPos - 20, yPos + 10);
+    
     
     fill(#a53030); //red
     ellipse(xPos - 5, yPos, 12, 7);
